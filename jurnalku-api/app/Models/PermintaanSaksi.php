@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class PermintaanSaksi extends Model
 {
+    protected $table = 'permintaan_saksis';
+
     //
-    protected $table = [
+    protected $fillable = [
         "pengirim",
         "tanggal",
         "konfirmasi"
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
     ];
 }

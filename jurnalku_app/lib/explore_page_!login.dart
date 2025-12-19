@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:jurnalku_app/dashboard_page.dart';
 import 'package:jurnalku_app/login_page.dart';
 import 'package:jurnalku_app/profile_page%20_login.dart';
-import 'dart:ui';
-
+import 'package:jurnalku_app/models/student_model.dart';
+import 'package:jurnalku_app/services/student_service.dart';
 
 class ExplorePageLogin extends StatefulWidget {
   const ExplorePageLogin({super.key});
@@ -13,31 +15,39 @@ class ExplorePageLogin extends StatefulWidget {
 }
 
 class _ExplorePageLoginState extends State<ExplorePageLogin> {
+  late Future<List<Student>> _studentsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _studentsFuture = StudentService.fetchStudents();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: const Size.fromHeight(60),
         child: Container(
           height: 60,
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           color: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
                 onTap: () {
-                  // Arahkan ke halaman lain (atau halaman sama)
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DashboardPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const DashboardPage()),
                   );
                 },
                 child: Row(
                   children: [
                     Icon(Icons.menu_book_rounded,
                         color: Colors.blue[900], size: 28),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
                       "Jurnalku",
                       style: TextStyle(
@@ -53,16 +63,18 @@ class _ExplorePageLoginState extends State<ExplorePageLogin> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const LoginPage()),
                   );
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.blue[900],
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Login",
                     style: TextStyle(
                       color: Colors.white,
@@ -79,176 +91,49 @@ class _ExplorePageLoginState extends State<ExplorePageLogin> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              children: [
-                // 🔵 Background blur
-                SizedBox(
-                  height: 220,
-                  width: double.infinity,
-                  child: ImageFiltered(
-                    imageFilter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                    child: Image.asset(
-                      "assets/images/1 login.jpg",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-
-                // 🔵 Overlay gelap
-                Container(
-                  height: 220,
-                  width: double.infinity,
-                  color: Colors.black.withOpacity(0.35),
-                ),
-
-                // 🔵 Isi konten
-                Positioned.fill(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Direktori Siswa",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 26,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      const Text(
-                        "Temukan dan jelajahi profil siswa SMK Wikrama Bogor",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.15),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            // 🔎 SEARCH BAR
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: Colors.grey.shade300),
-                                    ),
-                                    child: const TextField(
-                                      decoration: InputDecoration(
-                                        hintText:
-                                            "Cari nama siswa, NIS, atau rombel...",
-                                        border: InputBorder.none,
-                                        prefixIcon: Icon(Icons.search_outlined,
-                                            size: 22),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff0b2f6a),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Text(
-                                    "Cari",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 12),
-
-                            // 🔽 FILTER
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Colors.grey.shade300),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Icon(Icons.filter_list),
-                                  SizedBox(width: 5),
-                                  Text("Filter Lanjutan"),
-                                  SizedBox(width: 4),
-                                  Icon(Icons.keyboard_arrow_down_rounded,
-                                      size: 20),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            _headerSection(),
             const SizedBox(height: 10),
-            _studentCard(
-              name: "Abdee Munzie Alazkha",
-              nis: "12510778",
-              photoUrl: "assets/images/profile.jpg",
-              rombel: "PPLG X-3",
-              rayon: "Cia 1",
-              portfolio: 2,
-              sertifikat: 14,
+
+            /// 🔽 DATA SISWA DARI API
+            FutureBuilder<List<Student>>(
+              future: _studentsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.all(40),
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                if (snapshot.hasError) {
+                  return Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(
+                      'Error: ${snapshot.error}',
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                }
+
+                final students = snapshot.data!;
+
+                return Column(
+                  children: students.map((student) {
+                    return _studentCard(
+                      name: student.nama,
+                      nis: student.nis.toString(),
+                      photoUrl:
+                          'http://127.0.0.1:8000/storage/${student.photo}',
+                      rombel: student.rombel,
+                      rayon: student.rayon,
+                      portfolio: 0,
+                      sertifikat: 0,
+                    );
+                  }).toList(),
+                );
+              },
             ),
-            _studentCard(
-              name: "Abdul Hadi",
-              nis: "12309480",
-              photoUrl: "assets/images/profile.jpg",
-              rombel: "PPLG XII-4",
-              rayon: "Cic 3",
-              portfolio: 3,
-              sertifikat: 6,
-            ),
-            _studentCard(
-              name: "Nisa Samrotul Fuadah",
-              nis: "12309480",
-              photoUrl: "assets/images/profile.jpg",
-              rombel: "PPLG XII-5",
-              rayon: "Cic 9",
-              portfolio: 9,
-              sertifikat: 10,
-            ),
-            _studentCard(
-              name: "Nisa Auliani",
-              nis: "12309480",
-              photoUrl: "assets/images/profile.jpg",
-              rombel: "PPLG XII-5",
-              rayon: "Cic 8",
-              portfolio: 2,
-              sertifikat: 5,
-            ),
+
             const SizedBox(height: 30),
           ],
         ),
@@ -256,6 +141,131 @@ class _ExplorePageLoginState extends State<ExplorePageLogin> {
     );
   }
 
+  // ================= HEADER =================
+  Widget _headerSection() {
+    return Stack(
+      children: [
+        SizedBox(
+          height: 220,
+          width: double.infinity,
+          child: ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+            child: Image.asset(
+              "assets/images/1 login.jpg",
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Container(
+          height: 220,
+          width: double.infinity,
+          color: Colors.black.withOpacity(0.35),
+        ),
+        Positioned.fill(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Direktori Siswa",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 5),
+              const Text(
+                "Temukan dan jelajahi profil siswa SMK Wikrama Bogor",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 15),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.15),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border:
+                                  Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: const TextField(
+                              decoration: InputDecoration(
+                                hintText:
+                                    "Cari nama siswa, NIS, atau rombel...",
+                                border: InputBorder.none,
+                                prefixIcon:
+                                    Icon(Icons.search_outlined),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12),
+                          decoration: BoxDecoration(
+                            color: Color(0xff0b2f6a),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text(
+                            "Cari",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 15),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border:
+                            Border.all(color: Colors.grey.shade300),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Icons.filter_list),
+                          SizedBox(width: 5),
+                          Text("Filter Lanjutan"),
+                          SizedBox(width: 4),
+                          Icon(Icons.keyboard_arrow_down_rounded),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ================= CARD =================
   Widget _studentCard({
     required String name,
     required String nis,
@@ -315,7 +325,8 @@ class _ExplorePageLoginState extends State<ExplorePageLogin> {
               ),
               Row(
                 children: [
-                  Icon(Icons.verified, size: 18, color: Colors.grey[700]),
+                  Icon(Icons.verified,
+                      size: 18, color: Colors.grey[700]),
                   const SizedBox(width: 6),
                   Text("$sertifikat Sertifikat"),
                 ],
@@ -326,43 +337,25 @@ class _ExplorePageLoginState extends State<ExplorePageLogin> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const ProfilePageLogin()),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue.shade900,
                 padding:
-                    const EdgeInsets.symmetric(vertical: 13, horizontal: 15),
+                    const EdgeInsets.symmetric(vertical: 13),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProfilePageLogin()),
-                      );
-                    },
-                    child: const Text(
-                      "Lihat Detail",
-                      style: TextStyle(fontSize: 15, color: Colors.white),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 1),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_forward,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
+              child: const Text(
+                "Lihat Detail",
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ),

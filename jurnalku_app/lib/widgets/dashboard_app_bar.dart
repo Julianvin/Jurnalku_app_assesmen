@@ -75,7 +75,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                    MaterialPageRoute(builder: (context) => ProfilePage(studentId: 1)),
                   );
                 },
                 child: const Row(

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('pengirim');
             $table->date('tanggal');
-            $table->boolean('konfirmasi')->default(false);
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }
